@@ -39,7 +39,7 @@ public class ItemTest {
         // initial bidding
         assertFalse("Can't bid lower than asking price", item.tryToBid(low));
         assertTrue("Should accept asking price", item.tryToBid(asking));
-        assertEquals("Should see accepting price", 10.0, item.getWiningBid(), 0.01);
+        assertEquals("Should see accepting price", 10.0, item.getWiningBid().getPrice(), 0.01);
         assertEquals("Should have 1 bid", 1, item.getBids().size(), 0);
 
         // same bid again
@@ -49,7 +49,7 @@ public class ItemTest {
         // new bid
         Bid higher = new Bid("user", 0, 11.0);
         assertTrue("Should accept new bid", item.tryToBid(higher));
-        assertEquals("Should see higher price", 11.0, item.getWiningBid(), 0.01);
+        assertEquals("Should see higher price", 11.0, item.getWiningBid().getPrice(), 0.01);
         assertEquals("Still have 2 bids", 2, item.getBids().size());
     }
 

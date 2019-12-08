@@ -9,7 +9,7 @@ import static java.lang.Double.doubleToLongBits;
 import static java.lang.Double.longBitsToDouble;
 import static jdk.nashorn.internal.objects.NativeMath.max;
 
-public class Item {
+public class Item implements Comparable<Item> {
     private final long itemId;
     private final String description;
     private final long startingPrice;
@@ -38,12 +38,15 @@ public class Item {
         return longBitsToDouble(startingPrice);
     }
 
-    public Double getWiningBid() {
+    public Bid getWiningBid() {
         double price = longBitsToDouble(winingBidInLong.get());
         if (price == 0.0) {
             return null;
         } else {
-            return price;
+            return bids.stream()
+                    .filter(b -> b.getPrice() == price)
+                    .findFirst()
+                    .orElseThrow(() -> new RuntimeException("Shouldn't happened has there should be a bid at that price"));
         }
     }
 
@@ -68,4 +71,8 @@ public class Item {
         return false;
     }
 
+    @Override
+    public int compareTo(Item item) {
+        return (int)(item.getItemId() - this.getItemId());
+    }
 }
