@@ -1,5 +1,8 @@
 import org.junit.Test;
 
+import java.util.List;
+import java.util.Set;
+
 import static org.junit.Assert.*;
 
 public class EbenTest {
@@ -74,9 +77,40 @@ public class EbenTest {
 
     @Test
     public void findAllItemBidsByUser() {
+        // GIVEN
+        Eben ebay = new Eben();
+        ebay.register(ben);
+        ebay.register(ali);
+        ebay.enlist(table);
+        ebay.enlist(chair);
+        ebay.bid(table.getItemId(), ben.getName(), 51.0);
+        ebay.bid(chair.getItemId(), ben.getName(), 11.0);
+        ebay.bid(chair.getItemId(), ali.getName(), 12.0);
+
+        // WHEN
+        Set<Item> items = ebay.findAllItemBidsByUser(ben.getName());
+
+        // THEN
+        assertEquals("2 items bidded on", 2, items.size());
     }
 
     @Test
     public void getAllBids() {
+
+        // GIVEN
+        Eben ebay = new Eben();
+        ebay.register(ben);
+        ebay.register(ali);
+        ebay.enlist(table);
+        ebay.enlist(chair);
+        ebay.bid(table.getItemId(), ben.getName(), 51.0);
+        ebay.bid(chair.getItemId(), ben.getName(), 11.0);
+        ebay.bid(chair.getItemId(), ali.getName(), 12.0);
+
+        // WHEN
+        List<Bid> bids = ebay.getAllBids(chair.getItemId());
+
+        // THEN
+        assertEquals("2 bids on the chair", 2, bids.size());
     }
 }
